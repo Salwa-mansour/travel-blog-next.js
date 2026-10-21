@@ -31,9 +31,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: ogImageUrl 
         ? [
             {
-              url: ogImageUrl,
+             url: ogImageUrl,
+              secureUrl: ogImageUrl,
               width: 1200,
               height: 630,
+              type: 'image/jpeg', // Explicitly declare format for strict crawlers
               alt: seoTitle,
             },
           ] 
