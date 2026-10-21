@@ -11,7 +11,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
   const post = await getPost(id)
-  console.log(post)
+ 
   if (!post) {
     return { title: 'Post Not Found' }
   }
@@ -28,7 +28,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: seoTitle,
       description: seoDescription,
-      // images: ogImageUrl ? [{ url: ogImageUrl }] : [],
+      images: ogImageUrl 
+        ? [
+            {
+              url: ogImageUrl,
+              width: 1200,
+              height: 630,
+              alt: seoTitle,
+            },
+          ] 
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: seoDescription,
+      images: ogImageUrl ? [ogImageUrl] : [],
     },
   }
 }
