@@ -1,8 +1,36 @@
 import { Suspense } from 'react'
 import PostDetails from '@/components/PostDetails'
+import { getPost } from '@/actions/actions'
+import { urlFor } from '@/lib/sanity'
+import type { Metadata } from 'next'
 
 interface Props {
   params: Promise<{ id: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
+  const post = await getPost(id)
+  console.log(post)
+  if (!post) {
+    return { title: 'Post Not Found' }
+  }
+
+  const seoTitle = post.seo?.metaTitle || post.title
+  const seoDescription = post.seo?.metaDescription || post.excerpt
+  const ogImageUrl = post.seo?.openGraphImage 
+    ? urlFor(post.seo.openGraphImage).width(1200).height(630).url() 
+    : urlFor(post.mainImage).width(1200).height(630).url()
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      // images: ogImageUrl ? [{ url: ogImageUrl }] : [],
+    },
+  }
 }
 
 export default function SinglePostPage({ params }: Props) {
@@ -19,11 +47,6 @@ function PostSkeleton() {
       <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
       <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
       <div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-lg w-full"></div>
-      <div className="space-y-2 pt-4">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
-      </div>
     </div>
   )
 }
