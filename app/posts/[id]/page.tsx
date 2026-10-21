@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const seoTitle = post.seo?.metaTitle || post.title
   const seoDescription = post.seo?.metaDescription || post.excerpt
   const ogImageUrl = post.seo?.openGraphImage 
-    ? urlFor(post.seo.openGraphImage).width(1200).height(630).url() 
-    : urlFor(post.mainImage).width(1200).height(630).url()
+    ? urlFor(post.seo.openGraphImage).width(1200).height(630).fit('crop').auto('format').url() 
+    : urlFor(post.mainImage).width(1200).height(630).fit('crop').auto('format').url()
 
   return {
     title: seoTitle,
