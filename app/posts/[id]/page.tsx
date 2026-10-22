@@ -1,7 +1,10 @@
-import { getPostDetailData } from '@/actions/actions'
+import { getPostDetailData, getLatestPosts, getRelatedPosts } from '@/actions/actions'
 import { urlFor } from '@/lib/sanity'
 import type { Metadata } from 'next'
 import PostDetailClient from '@/components/PostDetailClient'
+import { Suspense } from 'react'
+import CommentForm from '@/components/CommentForm'
+
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -25,18 +28,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: seoDescription,
       images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: seoTitle,
-      description: seoDescription,
-      images: ogImageUrl ? [ogImageUrl] : [],
-    },
   }
 }
 
 export default async function PostDetailPage({ params }: PageProps) {
   const { id } = await params
+  
+  // Fetch everything concurrently on the server (bypasses CORS entirely)
   const post = await getPostDetailData(id)
+  const latestPosts = await getLatestPosts()
+  const relatedPosts = post?.locationDetails?.countryName 
+    ? await getRelatedPosts(post.locationDetails.countryName, post.slug?.current)
+    : []
 
-  return <PostDetailClient post={post} />
+  return (
+    <>
+        <PostDetailClient 
+          post={post} 
+          latestPosts={latestPosts} 
+          relatedPosts={relatedPosts} 
+        />
+   <CommentForm  postId={id}/>
+   </>
+  )
 }

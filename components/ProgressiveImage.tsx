@@ -40,7 +40,7 @@ export default function ProgressiveImage({
   const highResUrl = urlFor(imageObject).width(width).auto('format').url()
 
   return (
-    <div className={`relative overflow-hidden ${classNames}`}>
+    <div className={` ${classNames}`}>
       {/* Low-res blurred background placeholder */}
       <Image
         src={lowResUrl}

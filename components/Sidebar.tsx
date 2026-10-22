@@ -22,6 +22,7 @@ export default function Sidebar({ latestPosts }: SidebarProps) {
                 imageObject={post.mainImage}
                 alt={post.title}
                 classNames="post-thumbnail"
+                width={200}
               />
               <div className="post-info">
                 <span className="post-date">

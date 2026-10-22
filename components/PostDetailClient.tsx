@@ -70,7 +70,7 @@ export default function PostDetailClient({ post, latestPosts, relatedPosts }: Po
           </article>
         </div>
       </section>
-
+                
       <section>
         <RelatedPosts relatedPosts={relatedPosts} country={post?.locationDetails?.countryName} />
       </section>

@@ -155,15 +155,14 @@ export const getPostDetailData = cache(async (id: string) => {
 })
 
 export const getLatestPosts = cache(async () => {
-  const query = `*[_type == "post"] | order(publishedAt desc)[0...4] {
+  const query = `*[_type == "post"]  [0...4] {
     _id,
     title,
     slug,
     publishedAt,
     mainImage {
       asset,
-      hotspot,
-      crop
+     
     }
   }`
 
