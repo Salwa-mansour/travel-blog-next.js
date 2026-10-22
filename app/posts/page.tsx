@@ -1,17 +1,36 @@
+import { getPostsPageData } from '@/actions/actions'
+import { urlFor } from '@/lib/sanity'
+import type { Metadata } from 'next'
+import PostsWrapper from '@/components/PostsWrapper'
 
-import PostList from "@/components/PostList"
-import { Suspense } from "react"
+export async function generateMetadata(): Promise<Metadata> {
+  const { pageMetaData } = await getPostsPageData()
 
+  const seoTitle = pageMetaData?.seo?.metaTitle || pageMetaData?.title || 'Travel Posts'
+  const seoDescription = pageMetaData?.seo?.metaDescription || ''
+  const ogImageUrl = pageMetaData?.seo?.openGraphImage
+    ? urlFor(pageMetaData.seo.openGraphImage).width(1200).height(630).url()
+    : undefined
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: seoDescription,
+      images: ogImageUrl ? [ogImageUrl] : [],
+    },
+  }
+}
 
 export default async function PostsPage() {
- 
-  return (
-    <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">My Blog</h1>
-      
-      <Suspense >
-         <PostList/>
-      </Suspense>
-    </main>
-  )
+  const { posts, pageMetaData } = await getPostsPageData()
+
+  return <PostsWrapper initialPosts={posts} pageMetaData={pageMetaData} />
 }

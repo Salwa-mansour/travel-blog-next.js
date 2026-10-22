@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+//import { Geist, Geist_Mono } from "next/font/google";
+// import "./globals.css";
+import { Bodoni_Moda_SC, Quicksand } from "next/font/google";
+import "@/css/main.css"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer";
+import { Suspense } from "react";
 
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Configure Bodoni Moda SC
+const bodoniModaSC = Bodoni_Moda_SC({
   subsets: ["latin"],
+  variable: "--font-bodoni",
+  weight: ["400", "600", "700", "900"], // Adjust weights as needed
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Configure Quicksand
+const quicksand = Quicksand({
   subsets: ["latin"],
+  variable: "--font-quicksand",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -24,12 +30,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+      className={`${bodoniModaSC.variable} ${quicksand.variable} h-full antialiased`}
+   
+   >
       <body className="min-h-full flex flex-col">
-          <Header/>
+         <Suspense fallback={<div className="h-16" />}>
+          <Header />
+        </Suspense>
           {children}
-          <Footer/>
+          <Suspense fallback={<div className="h-16" />}>
+          <Footer />
+        </Suspense>
       </body>
     </html>
   );

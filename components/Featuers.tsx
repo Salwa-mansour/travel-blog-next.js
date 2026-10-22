@@ -1,0 +1,406 @@
+'use client'
+
+import { useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
+import Link from 'next/link'
+import ProgressiveImage from '@/components/ProgressiveImage'
+import '@/css/features.css'
+
+// Register plugins safely
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin)
+
+interface FeaturesProps {
+  data: any
+}
+
+export default function Features({ data }: FeaturesProps) {
+  const containerRef = useRef<HTMLElement>(null)
+  const headingRef = useRef<HTMLDivElement>(null)
+
+  // 1. Heading entrance animation
+  useGSAP(
+    () => {
+      if (!headingRef.current) return
+      gsap.from(headingRef.current.children, {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: 'top 85%',
+        },
+      })
+    },
+    { scope: containerRef }
+  )
+
+  // 2. Responsive MatchMedia Weather MotionPath Animations
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+      
+      gsap.set('.cloudy-bg', { opacity: 0 })
+      gsap.set('.rain-path', { yPercent: -30, opacity: 0 })
+      gsap.set('.snow-path', { yPercent: -30, opacity: 0 })
+      gsap.set('.cloud-path', { xPercent: -30, opacity: 0 })
+
+      mm.add(
+        {
+          isDesktop: '(min-width: 868px)',
+          isMobile: '(max-width: 867px)',
+        },
+        (context) => {
+          const { isDesktop } = context.conditions || {}
+
+          if (isDesktop) {
+            desktopAnimations()
+          } else {
+            mobileAnimations()
+          }
+        }
+      )
+    },
+    { scope: containerRef }
+  )
+
+  const mobileAnimations = () => {
+    const allFeatures = gsap.utils.toArray('.feature', containerRef.current) as HTMLElement[]
+
+    allFeatures.forEach((card) => {
+      gsap.from(card, {
+        y: 60,
+        opacity: 0.5,
+        scale: 0.5,
+        rotate: 15,
+        duration: 0.7,
+        ease: 'elastic.out(1, 0.75)',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 95%',
+          toggleActions: 'play none none reverse',
+          invalidateOnRefresh: true,
+        },
+      })
+    })
+
+    gsap.set('.sun-icon-item', {
+      opacity: 1,
+      motionPath: {
+        path: '#linerPath',
+        align: '#linerPath',
+        alignOrigin: [0.5, 0.5],
+        start: 0,
+        end: 0,
+      },
+    })
+
+    gsap.set('.cloud-icon-item', {
+      opacity: 0,
+      motionPath: {
+        path: '#linerPath',
+        align: '#linerPath',
+        alignOrigin: [0.5, 0.5],
+        start: 0.2,
+        end: 0.2,
+      },
+    })
+
+    const masterMobileTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top+=100',
+        end: 'bottom+=200 70%',
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    })
+
+    masterMobileTl
+      .to('.sun-icon-item', {
+        motionPath: { path: '#linerPath', align: '#linerPath', alignOrigin: [0.5, 0.5], start: 0, end: 0.2, autoRotate: false },
+        ease: 'power1.out',
+        duration: 2,
+      })
+      .to('.cloud-icon-item', {
+        motionPath: { path: '#linerPath', align: '#linerPath', alignOrigin: [0.5, 0.5], start: 0.2, end: 0.45, autoRotate: false },
+        ease: 'power1.out',
+        duration: 2,
+      })
+      .to('.sun-icon-item', {
+        motionPath: { path: '#linerPath', align: '#linerPath', alignOrigin: [0.5, 0.5], start: 0.2, end: 0.45, autoRotate: false },
+        ease: 'power1.out',
+        duration: 2,
+      }, '<')
+      .to('.cloud-icon-item', { opacity: 1, duration: 0.1 }, '<')
+      .to('.cloud-path', { opacity: 1, duration: 0.1 }, '<')
+      .to('.cloud-path', { xPercent: 0, duration: 1.5 }, '<')
+      .to('.sun-icon-item', { opacity: 0, duration: 0.1 })
+      .to('.cloud-icon-item', {
+        motionPath: { path: '#linerPath', align: '#linerPath', alignOrigin: [0.5, 0.5], start: 0.45, end: 0.65, autoRotate: false },
+        ease: 'power1.out',
+        duration: 2,
+      })
+      .to('.cloud-icon-item', {
+        motionPath: { path: '#linerPath', align: '#linerPath', alignOrigin: [0.5, 0.5], start: 0.65, end: 0.87, autoRotate: false },
+        ease: 'power1.out',
+        duration: 2,
+      })
+      .to('.rain-path', { opacity: 1, duration: 0.1 }, '<')
+      .to('.rain-path', { yPercent: 0, duration: 0.8 }, '<')
+      .to('.rain-path', { opacity: 0, duration: 0.1 })
+      .to('.cloud-icon-item', {
+        motionPath: { path: '#linerPath', align: '#linerPath', alignOrigin: [0.5, 0.5], start: 0.87, end: 1, autoRotate: false },
+        ease: 'power1.out',
+        duration: 2,
+      })
+      .to('.snow-path', { opacity: 1, duration: 0.1 }, '<')
+      .to('.snow-path', { yPercent: 0, duration: 0.8 }, '<')
+      .to('.snow-path', { opacity: 0, duration: 0.1 })
+  }
+
+  const desktopAnimations = () => {
+    const allFeatures = gsap.utils.toArray('.features .feature') as HTMLElement[]
+
+    gsap.set(allFeatures[0], { top: '10%', right: '15%', left: 'auto' })
+    gsap.set(allFeatures[1], { top: '23%', left: '10%', right: 'auto' })
+    gsap.set(allFeatures[2], { top: '45%', right: '10%', left: 'auto' })
+    gsap.set(allFeatures[3], { top: '67%', left: '10%', right: 'auto' })
+    gsap.set(allFeatures[4], { top: '82%', right: '10%', left: 'auto' })
+
+    allFeatures.forEach((feature, index) => {
+      const directionX = index % 2 === 0 ? 200 : -200
+      gsap.from(feature, {
+        scrollTrigger: {
+          trigger: feature,
+          start: 'top 85%',
+        },
+        opacity: 0,
+        scale: 0.5,
+        rotate: 15,
+        x: directionX,
+        y: 100,
+        duration: 1,
+        ease: 'elastic.out(1, 0.75)',
+      })
+    })
+
+    gsap.set('.sun-icon-item', {
+      opacity: 0,
+      motionPath: { path: '#weatherPath', align: '#weatherPath', alignOrigin: [0.5, 0.5], start: 0, end: 0 },
+    })
+
+    gsap.set('.cloud-icon-item', {
+      opacity: 0,
+      motionPath: { path: '#weatherPath', align: '#weatherPath', alignOrigin: [0.5, 0.5], start: 0.2, end: 0.2 },
+    })
+
+    const mainWeatherTl = gsap.timeline({ paused: true })
+
+    mainWeatherTl
+      .addLabel('sunStart')
+      .to('.sun-icon-item', { opacity: 1, duration: 0.05 })
+      .to('.sun-icon-item', { motionPath: { path: '#weatherPath', align: '#weatherPath', alignOrigin: [0.5, 0.5], start: 0, end: 0.2 }, duration: 2, ease: 'none' }, '<')
+      .addLabel('sunEnd')
+      .addLabel('cloudySunStart')
+      .to(['.cloud-icon-item', '.cloud-path'], { opacity: 1, duration: 0.05 })
+      .to('.cloud-icon-item', { motionPath: { path: '#weatherPath', align: '#weatherPath', alignOrigin: [0.5, 0.5], start: 0.2, end: 0.47 }, ease: 'none' }, '<')
+      .to('.sun-icon-item', { motionPath: { path: '#weatherPath', align: '#weatherPath', alignOrigin: [0.5, 0.5], start: 0.2, end: 0.47 }, ease: 'none' }, '<')
+      .to('.cloud-path', { xPercent: -20, duration: 1 }, '<')
+      .to('.sun-icon-item', { opacity: 0, duration: 0.05 })
+      .to('.cloud-path', { xPercent: 0, duration: 0.05 })
+      .addLabel('cloudySunEnd')
+      .addLabel('cloudyStart')
+      .to('.cloud-icon-item', { motionPath: { path: '#weatherPath', align: '#weatherPath', alignOrigin: [0.5, 0.5], start: 0.47, end: 0.75 }, ease: 'none' })
+      .addLabel('cloudyEnd')
+      .addLabel('rainyStart')
+      .to('.cloud-icon-item', { motionPath: { path: '#weatherPath', align: '#weatherPath', alignOrigin: [0.5, 0.5], start: 0.75, end: 0.95 }, ease: 'none' })
+      .to('.rain-path', { opacity: 1, duration: 0.05 }, '<')
+      .to('.rain-path', { yPercent: 0, duration: 1 }, '<')
+      .to('.cloud-icon-item', { opacity: 0 })
+      .addLabel('rainyEnd')
+
+    const bindScrollToLabels = (triggerElem: Element, startLabel: string, endLabel: string, config: any = {}) => {
+      const startTime = mainWeatherTl.labels[startLabel]
+      const endTime = mainWeatherTl.labels[endLabel]
+
+      return gsap.fromTo(
+        mainWeatherTl,
+        { time: startTime },
+        {
+          time: endTime,
+          ease: 'power1.out',
+          scrollTrigger: {
+            trigger: triggerElem,
+            start: config.start || 'top center+=10',
+            end: config.end || 'bottom center',
+            scrub: config.scrub ?? 0.5,
+            invalidateOnRefresh: true,
+            markers: config.markers || false,
+          },
+        }
+      )
+    }
+
+    if (allFeatures[0]) bindScrollToLabels(allFeatures[0], 'sunStart', 'sunEnd', { end: 'bottom+=110 center' })
+    if (allFeatures[1]) bindScrollToLabels(allFeatures[1], 'cloudySunStart', 'cloudySunEnd', { end: 'bottom+=250 center' })
+    if (allFeatures[2]) bindScrollToLabels(allFeatures[2], 'cloudyStart', 'cloudyEnd', { end: 'bottom+=250 center' })
+    if (allFeatures[3]) bindScrollToLabels(allFeatures[3], 'rainyStart', 'rainyEnd', { end: 'bottom+=250 center' })
+
+    if (allFeatures[2]) {
+      gsap.to('.cloudy-bg', {
+        opacity: 1,
+        scrollTrigger: {
+          trigger: allFeatures[2],
+          start: 'top center',
+          scrub: 2,
+        },
+      })
+    }
+  }
+
+  return (
+    <section className="features" ref={containerRef}>
+      <div className="section-heading" ref={headingRef}>
+        <h2>{data?.featuresHeading}</h2>
+        <p>{data?.featuresSubheading}</p>
+      </div>
+
+      <div className="background">
+        <svg width="50" height="1750" viewBox="0 0 50 1750" xmlns="http://www.w3.org/2000/svg" className="line-path">
+          <path id="linerPath" d="M 25 50 L 25 1700" stroke="#afaeac" strokeWidth="4" strokeDasharray="12 12" strokeLinecap="round" />
+        </svg>
+        <svg viewBox="0 0 1021 1750" fill="none" xmlns="http://www.w3.org/2000/svg" className="curve-path">
+          <path id="weatherPath" d="M869.51 4.98096C869.51 4.98096 92.2848 72.8008 46.5095 431.981C-6.4157 847.264 1011.9 471.855 1015.51 890.481C1019.21 1319.64 1.40592 893.322 5.00955 1322.48C8.60041 1750.12 1015.51 1744.48 1015.51 1744.48" stroke="#afaeac" strokeWidth="10" strokeDasharray="36 36"></path>
+        </svg>
+
+        <div className="path-container sun-icon-item">
+          <svg viewBox="0 0 100 100" width="200" height="200" className="icon-path sun-path">
+            <g strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="50" cy="50" r="18" className="sun-body" fill="#FFDE59" stroke="#FF914D" strokeWidth="4" />
+              <g className="sun-rays" stroke="#FF914D" strokeWidth="4">
+                <line x1="50" y1="19" x2="50" y2="28" />
+                <line x1="50" y1="72" x2="50" y2="81" />
+                <line x1="19" y1="50" x2="28" y2="50" />
+                <line x1="72" y1="50" x2="81" y2="50" />
+                <line x1="28" y1="28" x2="34" y2="34" />
+                <line x1="66" y1="66" x2="72" y2="72" />
+                <line x1="28" y1="72" x2="34" y2="66" />
+                <line x1="66" y1="34" x2="72" y2="28" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <div className="path-container cloud-icon-item">
+          <svg viewBox="0 0 100 100" width="200" height="200" className="icon-path cloud-path">
+            <path d="M 25,45 A 12,12 0 0,1 25,21 A 16,16 0 0,1 55,13 A 14,14 0 0,1 75,45 Z" fill="#BAE6FD" stroke="#38BDF8" strokeWidth="4" />
+          </svg>
+
+          <svg viewBox="0 0 100 100" width="200" height="200" className="icon-path rain-path">
+            <g stroke="#0284C7" strokeWidth="3.5" strokeLinecap="round">
+              <line x1="26" y1="53" x2="24" y2="58" />
+              <line x1="23" y1="65" x2="21" y2="70" />
+              <line x1="20" y1="77" x2="18" y2="82" />
+              <line x1="41" y1="53" x2="39" y2="58" />
+              <line x1="37" y1="66" x2="35" y2="71" />
+              <line x1="33" y1="79" x2="31" y2="84" />
+              <line x1="56" y1="52" x2="54" y2="57" />
+              <line x1="52" y1="64" x2="50" y2="69" />
+              <line x1="48" y1="76" x2="46" y2="81" />
+              <line x1="71" y1="54" x2="69" y2="59" />
+              <line x1="67" y1="67" x2="65" y2="72" />
+              <line x1="63" y1="80" x2="61" y2="85" />
+            </g>
+          </svg>
+
+          <svg viewBox="0 0 100 100" width="200" height="200" className="icon-path snow-path">
+            <g fill="#FFFFFF" stroke="#0284C7" strokeWidth="1">
+              <circle cx="26" cy="53" r="2.5" />
+              <circle cx="23" cy="65" r="2" />
+              <circle cx="20" cy="77" r="2.5" />
+              <circle cx="41" cy="53" r="2" />
+              <circle cx="37" cy="66" r="3" />
+              <circle cx="33" cy="79" r="2" />
+              <circle cx="56" cy="52" r="2.5" />
+              <circle cx="52" cy="64" r="2" />
+              <circle cx="48" cy="76" r="2.5" />
+              <circle cx="71" cy="54" r="2" />
+              <circle cx="67" cy="67" r="2.5" />
+              <circle cx="63" cy="80" r="2" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div className="features-container">
+        {/* Feature 1 */}
+        <div className="feature sunny-feature">
+          <ProgressiveImage imageObject={data?.featuresList?.[0]?.image} alt={data?.featuresList?.[0]?.heading} width={600} />
+          <div className="feature-content">
+            <h2>{data?.featuresList?.[0]?.heading}</h2>
+            <p>{data?.featuresList?.[0]?.text}</p>
+          </div>
+          <Link href={`/posts/${data?.featuresList?.[0]?.postId}`} title="read more" className="card-link" />
+        </div>
+
+        {/* Feature 2 */}
+        <div className="feature cloud-sun-feature">
+          <ProgressiveImage imageObject={data?.featuresList?.[1]?.image} alt={data?.featuresList?.[1]?.heading} width={600} />
+          <div className="feature-content">
+            <h2>{data?.featuresList?.[1]?.heading}</h2>
+            <p>{data?.featuresList?.[1]?.text}</p>
+          </div>
+          <Link href={`/posts/${data?.featuresList?.[1]?.postId}`} title="read more" className="card-link" />
+        </div>
+
+        {/* Feature 3 */}
+        <div className="feature cloudy-feature">
+          <ProgressiveImage imageObject={data?.featuresList?.[2]?.image} alt={data?.featuresList?.[2]?.heading} width={600} />
+          <div className="feature-content">
+            <h2>{data?.featuresList?.[2]?.heading}</h2>
+            <p>{data?.featuresList?.[2]?.text}</p>
+          </div>
+          <Link href={`/posts/${data?.featuresList?.[2]?.postId}`} title="read more" className="card-link" />
+        </div>
+
+        {/* Feature 4 */}
+        <div className="feature rainy-feature">
+          <ProgressiveImage imageObject={data?.featuresList?.[3]?.image} alt={data?.featuresList?.[3]?.heading} width={600} />
+          <div className="feature-content">
+            <h2>{data?.featuresList?.[3]?.heading}</h2>
+            <p>{data?.featuresList?.[3]?.text}</p>
+          </div>
+          <Link href={`/posts/${data?.featuresList?.[3]?.postId}`} title="read more" className="card-link" />
+        </div>
+
+        {/* Feature 5 */}
+        <div className="feature snowy-feature">
+          <ProgressiveImage imageObject={data?.featuresList?.[4]?.image} alt={data?.featuresList?.[4]?.heading} width={600} />
+          <div className="feature-content">
+            <h2>{data?.featuresList?.[4]?.heading}</h2>
+            <p>{data?.featuresList?.[4]?.text}</p>
+          </div>
+          <Link href={`/posts/${data?.featuresList?.[4]?.postId}`} title="read more" className="card-link" />
+        </div>
+      </div>
+
+      <div className="bg-overlays">
+        <div className="bg-gradient sun-bg"></div>
+        <div className="bg-gradient cloudy-bg"></div>
+      </div>
+
+      {data?.featuresCtaText && (
+        <div className="features-cta-wrapper">
+          <Link href={data?.featuresCtaLink || '/'} className="features-cta-button hero-button">
+            {data?.featuresCtaText}
+          </Link>
+        </div>
+      )}
+    </section>
+  )
+}
