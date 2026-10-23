@@ -168,11 +168,10 @@ export const getLatestPosts = cache(async () => {
 
   return await client.fetch(query)
 })
-
-export const getRelatedPosts = cache(async (country: string, currentSlug: string) => {
+export const getRelatedPosts = cache(async (country: string, currentId: string) => {
   if (!country) return []
 
-  const query = `*[_type == "post" && locationDetails.countryName == $country && slug.current != $currentSlug][0...3] {
+  const query = `*[_type == "post" && locationDetails.countryName == $country && _id != $currentId][0...3] {
     _id,
     title,
     slug,
@@ -185,5 +184,5 @@ export const getRelatedPosts = cache(async (country: string, currentSlug: string
     locationDetails
   }`
 
-  return await client.fetch(query, { country, currentSlug })
+  return await client.fetch(query, { country, currentId })
 })

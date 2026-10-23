@@ -1,10 +1,11 @@
-import { getPostDetailData, getLatestPosts, getRelatedPosts } from '@/actions/actions'
+import { getPostDetailData } from '@/actions/actions'
 import { urlFor } from '@/lib/sanity'
 import type { Metadata } from 'next'
-import PostDetailClient from '@/components/PostDetailClient'
-import { Suspense } from 'react'
+import PostData from '@/components/post/PostData'
+import Sidebar from '@/components/Sidebar'
+import RelatedPosts from '@/components/post/RelatedPosts'
 import CommentForm from '@/components/CommentForm'
-
+import { Suspense } from 'react'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -33,22 +34,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PostDetailPage({ params }: PageProps) {
   const { id } = await params
-  
-  // Fetch everything concurrently on the server (bypasses CORS entirely)
-  const post = await getPostDetailData(id)
-  const latestPosts = await getLatestPosts()
-  const relatedPosts = post?.locationDetails?.countryName 
-    ? await getRelatedPosts(post.locationDetails.countryName, post.slug?.current)
-    : []
 
   return (
     <>
-        <PostDetailClient 
-          post={post} 
-          latestPosts={latestPosts} 
-          relatedPosts={relatedPosts} 
-        />
-   <CommentForm  postId={id}/>
-   </>
+      {/* 1. Add fallback to PostData */}
+      <Suspense fallback={<div className="animate-pulse">Loading post...</div>}>
+        <PostData postId={id} />
+      </Suspense>
+
+      {/* 2. Add fallback to Sidebar */}
+      <Suspense fallback={<div className="animate-pulse">Loading sidebar...</div>}>
+        <Sidebar />
+      </Suspense>
+
+      {/* 3. Add fallback to RelatedPosts */}
+      <Suspense fallback={<div className="animate-pulse">Loading related posts...</div>}>
+        <RelatedPosts postId={id} />
+      </Suspense>
+      
+      <CommentForm postId={id} />
+    </>
   )
 }

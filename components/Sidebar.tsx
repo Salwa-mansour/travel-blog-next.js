@@ -1,11 +1,9 @@
-import Link from 'next/link'
-import ProgressiveImage from '@/components/ProgressiveImage'
 
-interface SidebarProps {
-  latestPosts: any[]
-}
+import LatestPosts from './post/LatestPosts'
 
-export default function Sidebar({ latestPosts }: SidebarProps) {
+
+
+export default function Sidebar() {
   const tags = [
     'Photography', 'Tokyo', 'Travel', 'Design', 
     'Rainstorms', 'CSS Layouts', 'React', 'Inspiration'
@@ -13,27 +11,8 @@ export default function Sidebar({ latestPosts }: SidebarProps) {
 
   return (
     <aside className="blog-sidebar">
-      <div className="sidebar-widget">
-        <h3 className="widget-title">Latest Posts</h3>
-        <div className="latest-posts-list widget-content">
-          {latestPosts?.map((post: any) => (
-            <Link key={post._id} href={`/posts/${post._id}`} className="post-item">
-              <ProgressiveImage
-                imageObject={post.mainImage}
-                alt={post.title}
-                classNames="post-thumbnail"
-                width={200}
-              />
-              <div className="post-info">
-                <span className="post-date">
-                  {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : '10/14/2026'}
-                </span>
-                <h4 className="post-title">{post.title}</h4>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+
+      <LatestPosts  />
 
       <div className="sidebar-widget">
         <h3 className="widget-title">Popular Tags</h3>

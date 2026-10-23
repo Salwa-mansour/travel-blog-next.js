@@ -56,7 +56,7 @@ export default function PostDetailClient({ post, latestPosts, relatedPosts }: Po
               </div>
             </header>
 
-            <Sidebar latestPosts={latestPosts} />
+            <Sidebar  />
 
             <div className="post">
               <div className="text-container">
