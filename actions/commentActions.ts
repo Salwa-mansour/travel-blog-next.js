@@ -27,7 +27,7 @@ export async function submitComment(prevState: any, formData: FormData) {
       name,
       email,
       comment,
-      approved: false,
+      approved: true,
     })
 
     revalidatePath(`/posts/${postId}`)

@@ -4,12 +4,19 @@
 import { useActionState } from 'react'
 import { submitComment } from '@/actions/commentActions';
 
-export default function CommentForm({ postId }: { postId: string }) {
+interface CommentFromPorps{
+  postId:string
+  parentId?:string
+  onSuccess?:any
+}
+
+export default function CommentForm({ postId,parentId,onSuccess }:  CommentFromPorps ) {
   const [state, formAction, isPending] = useActionState(submitComment, null)
 
   return (
-    <form action={formAction} className= "comment-form space-y-4 max-w-lg mt-8 color-[#333] m-auto">
+    <form action={formAction} onSubmit={()=>onSuccess()} className= "comment-form space-y-4 max-w-lg mt-8 color-[#333] m-auto">
       <input type="hidden" name="postId" value={postId} />
+      <input type="hidden" name="parentId" value={parentId} />
       
       <h3 className="text-xl font-bold">Leave a Comment</h3>
       

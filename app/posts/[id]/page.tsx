@@ -5,6 +5,7 @@ import PostData from '@/components/post/PostData'
 import Sidebar from '@/components/Sidebar'
 import RelatedPosts from '@/components/post/RelatedPosts'
 import CommentForm from '@/components/CommentForm'
+import CommentList from '@/components/post/CommentList'
 import { Suspense } from 'react'
 
 interface PageProps {
@@ -51,8 +52,8 @@ export default async function PostDetailPage({ params }: PageProps) {
       <Suspense fallback={<div className="animate-pulse">Loading related posts...</div>}>
         <RelatedPosts postId={id} />
       </Suspense>
-      
-      <CommentForm postId={id} />
+      <CommentList postId={id} />
+      <CommentForm postId={id}  />
     </>
   )
 }
