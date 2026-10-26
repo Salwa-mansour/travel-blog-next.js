@@ -73,56 +73,56 @@ export const getHomeData = cache(async () => {
   const data = await client.fetch(query)
   return data
 })
-export const getPostsPageData = cache(async () => {
-  const query = `{
-    "posts": *[_type == "post"] | order(_createdAt desc){ 
-      _id, 
-      title, 
-      slug,
-      excerpt,
-      mainImage {
-        asset,
-        hotspot,
-        crop,
-        imageAttribution
-      },
-      body[] {
-        ...,
-        _type == "image" => {
-          asset,
-          hotspot,
-          crop,
-          imageAttribution
-        },
-        _type == "imageWithAttribution" => {
-          asset,
-          hotspot,
-          crop,
-          imageAttribution
-        }
-      },
-      locationDetails 
+export const getPostsList = cache(async () => {
+  const query = `*[_type == "post"] | order(_createdAt desc){ 
+    _id, 
+    title, 
+    slug,
+    excerpt,
+    mainImage {
+      asset,
+    
+      imageAttribution
     },
-    "pageMetaData": *[_type == "page" && slug.current == "posts"][0]{
-      title,
-      headerImage {
+    body[] {
+      ...,
+      _type == "image" => {
         asset,
         hotspot,
         crop,
         imageAttribution
       },
-      content,
-      seo {
-        metaTitle,
-        metaDescription,
-        openGraphImage
+      _type == "imageWithAttribution" => {
+        asset,
+        hotspot,
+        crop,
+        imageAttribution
       }
-    }
+    },
+    locationDetails 
   }`
 
   return await client.fetch(query)
 })
+export const getPageMetaData = cache(async (slug: string) => {
+  const query = `*[_type == "page" && slug.current == $slug][0]{
+    title,
+    headerImage {
+      asset,
+      hotspot,
+      crop,
+      imageAttribution
+    },
+    content,
+    seo {
+      metaTitle,
+      metaDescription,
+      openGraphImage
+    }
+  }`
 
+  return await client.fetch(query, { slug })
+})
 export const getPostDetailData = cache(async (id: string) => {
   const query = `*[_type == "post" && _id == $id][0]{ 
     _id, 

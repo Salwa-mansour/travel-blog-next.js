@@ -1,10 +1,13 @@
 import ProgressiveImage from './ProgressiveImage'
+import { getPageMetaData } from '@/actions/actions'
 
 interface PageHeaderProps {
-  pageMetaData: any
+  slug: string
 }
 
-export default function PageHeader({ pageMetaData }: PageHeaderProps) {
+export default async function PageHeader({ slug }: PageHeaderProps) {
+  const pageMetaData = await getPageMetaData(slug)
+
   return (
     <header className="page-header">
       <figure className="" tabIndex={-1}>

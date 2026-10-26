@@ -52,7 +52,9 @@ export default async function PostDetailPage({ params }: PageProps) {
       <Suspense fallback={<div className="animate-pulse">Loading related posts...</div>}>
         <RelatedPosts postId={id} />
       </Suspense>
-      <CommentList postId={id} />
+       <Suspense fallback={<div className="animate-pulse">Loading comments ...</div>}>
+          <CommentList postId={id} />
+      </Suspense>
       <CommentForm postId={id}  />
     </>
   )

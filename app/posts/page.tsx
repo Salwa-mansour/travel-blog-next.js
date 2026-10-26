@@ -1,10 +1,13 @@
-import { getPostsPageData } from '@/actions/actions'
+import { getPostsList, getPageMetaData } from '@/actions/actions'
 import { urlFor } from '@/lib/sanity'
 import type { Metadata } from 'next'
 import PostsWrapper from '@/components/PostsWrapper'
+import { Suspense } from 'react'
+import PageHeader from '@/components/PageHeader'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { pageMetaData } = await getPostsPageData()
+  // Fetch metadata using the dedicated function with the 'posts' slug
+  const pageMetaData = await getPageMetaData('posts')
 
   const seoTitle = pageMetaData?.seo?.metaTitle || pageMetaData?.title || 'Travel Posts'
   const seoDescription = pageMetaData?.seo?.metaDescription || ''
@@ -30,7 +33,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PostsPage() {
-  const { posts, pageMetaData } = await getPostsPageData()
-
-  return <PostsWrapper initialPosts={posts} pageMetaData={pageMetaData} />
+  return (
+    <>
+      <Suspense fallback={<p>loading ... </p>}>
+        <PageHeader slug='posts' />
+      </Suspense>
+      <Suspense fallback={<p>Loading search...</p>}>
+        <PostsWrapper />
+      </Suspense>
+    </>
+  )
 }
