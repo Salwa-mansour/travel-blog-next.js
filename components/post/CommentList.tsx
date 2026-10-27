@@ -10,7 +10,7 @@ export default async function CommentList({ postId }: CommentListProps) {
  
   const comments = await getPostComments(postId)
   const commentList = buildCommentTree(comments)
-console.log(comments)
+
   if (!commentList || commentList.length === 0) {
     return <p className="text-sm text-gray-500 my-4">No comments yet. Be the first to share your thoughts!</p>
   }

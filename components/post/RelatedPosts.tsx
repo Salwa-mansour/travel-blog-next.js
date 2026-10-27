@@ -22,9 +22,13 @@ export default async function RelatedPosts({postId}:RelatedPostsProps) {
         {relatedPosts.map((post: any) => (
           <article key={post._id} className="item-card">
             {post.mainImage?.asset && (
-              <figure className="post-img">
-                <ProgressiveImage imageObject={post.mainImage} alt={post.title} width={600} />
-              </figure>
+             
+                <ProgressiveImage
+                 imageObject={post.mainImage}
+                 alt={post.title}
+                  width={600}
+                  classNames="post-img" />
+             
             )}
             <div className="card-info">
               <h4>{post.title}</h4>

@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
-* {
+/* * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     outline: 1px solid red;
-}
+} */
 
 
 /* Quicksand - Inconsolata - Cutive Mono -Dosis */
@@ -23,6 +23,8 @@ body a,
 }
 figure{
     position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 button{

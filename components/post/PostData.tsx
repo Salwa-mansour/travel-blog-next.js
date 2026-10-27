@@ -35,15 +35,16 @@ const post = await getPostDetailData(postId)
           <article className="single-page-content">
             <header className="post-header" role="region" aria-label="Post Header">
               {post.mainImage?.asset && (
-                <figure className="main-img">
-                  <ProgressiveImage imageObject={post.mainImage} alt={post.title} isPrior={true} />
-                  {post.mainImage?.imageAttribution && (
-                    <figcaption
-                      className="image-attribution"
-                      dangerouslySetInnerHTML={{ __html: post.mainImage.imageAttribution }}
-                    />
-                  )}
-                </figure>
+               
+                  <ProgressiveImage 
+                    imageObject={post.mainImage}
+                    alt={post.title}
+                    isPrior={true}
+                    classNames='main-img'
+                    imgCaption={post.mainImage.imageAttribution ?{ __html: post.mainImage.imageAttribution } :null } />
+                 
+                  
+               
               )}
               <div className="post-header__data">
                 <h1 className="post-title">{post.title}</h1>

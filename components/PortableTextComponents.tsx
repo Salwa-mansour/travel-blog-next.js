@@ -8,19 +8,16 @@ export const customPortableTextComponents: PortableTextComponents = {
       if (!value?.asset) return null
 
       return (
-        <figure className="portable-text-image-container">
+     
           <ProgressiveImage
             imageObject={value}
             alt={value.alt || 'Post image'}
             width={800}
+            classNames='portable-text-image-container'
+            imgCaption={value.imageAttribution ? { __html: value.imageAttribution }: null}
           />
-          {value.imageAttribution && (
-            <figcaption
-              className="image-attribution"
-              dangerouslySetInnerHTML={{ __html: value.imageAttribution }}
-            />
-          )}
-        </figure>
+         
+      
       )
     },
     // Handle custom imageWithAttribution block
@@ -28,19 +25,15 @@ export const customPortableTextComponents: PortableTextComponents = {
       if (!value?.asset) return null
 
       return (
-        <figure className="portable-text-image-container">
+       
           <ProgressiveImage
             imageObject={value}
             alt={value.alt || 'Post image'}
             width={800}
+            classNames='portable-text-image-container'
+            imgCaption={value.imageAttribution ? { __html: value.imageAttribution }: null}
           />
-          {value.imageAttribution && (
-            <figcaption
-              className="image-attribution"
-              dangerouslySetInnerHTML={{ __html: value.imageAttribution }}
-            />
-          )}
-        </figure>
+       
       )
     },
   },

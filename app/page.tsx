@@ -1,9 +1,9 @@
 import { getHomeData } from '@/actions/actions'
 import { urlFor } from '@/lib/sanity'
 import type { Metadata } from 'next'
-import Hero from '@/components/Hero'
-import Features from '@/components/Featuers'
+import HomeView from '@/components/HomeView'
 import '@/css/home.css'
+import { Suspense } from 'react'
 
 export async function generateMetadata(): Promise<Metadata> {
   const { home, settings } = await getHomeData()
@@ -41,12 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const { home } = await getHomeData()
-
+ 
   return (
     <>
-      <Hero homeData={home} />
-      <Features data={home} />
+      <Suspense fallback={<p>loading home ...</p>}>
+        <HomeView/>
+      </Suspense>
     </>
   )
 }

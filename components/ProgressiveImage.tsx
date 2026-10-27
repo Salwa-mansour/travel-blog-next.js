@@ -9,7 +9,9 @@ interface ProgressiveImageProps {
   alt?: string
   isPrior?: boolean
   classNames?: string
-  width?:number
+  width?: number
+  imgCaption?: any
+  sizes?: string
 }
 
 export default function ProgressiveImage({
@@ -17,7 +19,9 @@ export default function ProgressiveImage({
   alt = 'image',
   isPrior = false,
   classNames = '',
-  width=1200,
+  width = 1200,
+  imgCaption,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 }: ProgressiveImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -29,25 +33,26 @@ export default function ProgressiveImage({
           src="https://placehold.co/600x400"
           alt={alt}
           fill
+          sizes={sizes}
           className="object-cover"
         />
       </div>
     )
   }
 
-  // Generate low-res blurred placeholder & optimized high-res URL from Sanity
+  // Generate low-res blurred placeholder & optimized high-res URL from Sanity using your width prop
   const lowResUrl = urlFor(imageObject).width(50).blur(20).url()
   const highResUrl = urlFor(imageObject).width(width).auto('format').url()
 
   return (
-    <div className={` ${classNames}`}>
+    <figure className={`relative overflow-hidden ${classNames}`}>
       {/* Low-res blurred background placeholder */}
       <Image
         src={lowResUrl}
         alt=""
         aria-hidden="true"
         fill
-        sizes="100vw"
+        sizes={sizes}
         className="object-cover absolute inset-0 pointer-events-none"
         style={{
           filter: 'blur(12px)',
@@ -61,7 +66,7 @@ export default function ProgressiveImage({
         src={highResUrl}
         alt={alt}
         fill
-        sizes="100vw"
+        sizes={sizes}
         priority={isPrior}
         onLoad={() => setIsLoaded(true)}
         className="object-cover"
@@ -70,6 +75,13 @@ export default function ProgressiveImage({
           transition: 'opacity 0.4s ease-in-out',
         }}
       />
-    </div>
+
+      {imgCaption && (
+        <figcaption
+          className="image-attribution"
+          dangerouslySetInnerHTML={imgCaption}
+        />
+      )}
+    </figure>
   )
 }

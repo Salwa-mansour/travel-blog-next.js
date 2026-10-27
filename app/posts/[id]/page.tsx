@@ -1,12 +1,9 @@
-import { getPostDetailData } from '@/actions/actions'
+// app/posts/[id]/page.tsx
 import { urlFor } from '@/lib/sanity'
+import { getPostDetailData } from '@/actions/actions'
 import type { Metadata } from 'next'
-import PostData from '@/components/post/PostData'
-import Sidebar from '@/components/Sidebar'
-import RelatedPosts from '@/components/post/RelatedPosts'
-import CommentForm from '@/components/CommentForm'
-import CommentList from '@/components/post/CommentList'
 import { Suspense } from 'react'
+import PostPageContent from '@/components/post/PostPageContent'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -33,29 +30,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function PostDetailPage({ params }: PageProps) {
-  const { id } = await params
-
+export default function PostDetailPage({ params }: PageProps) {
   return (
-    <>
-      {/* 1. Add fallback to PostData */}
-      <Suspense fallback={<div className="animate-pulse">Loading post...</div>}>
-        <PostData postId={id} />
-      </Suspense>
-
-      {/* 2. Add fallback to Sidebar */}
-      <Suspense fallback={<div className="animate-pulse">Loading sidebar...</div>}>
-        <Sidebar />
-      </Suspense>
-
-      {/* 3. Add fallback to RelatedPosts */}
-      <Suspense fallback={<div className="animate-pulse">Loading related posts...</div>}>
-        <RelatedPosts postId={id} />
-      </Suspense>
-       <Suspense fallback={<div className="animate-pulse">Loading comments ...</div>}>
-          <CommentList postId={id} />
-      </Suspense>
-      <CommentForm postId={id}  />
-    </>
+    <Suspense fallback={<div className="animate-pulse py-12 text-center">Loading page...</div>}>
+      <PostPageContent params={params} />
+    </Suspense>
   )
 }
