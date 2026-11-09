@@ -340,7 +340,7 @@ export default function Features({ data }: FeaturesProps) {
       <div className="features-container">
         {/* Feature 1 */}
         <div className="feature sunny-feature">
-          <ProgressiveImage imageObject={data?.featuresList?.[0]?.image} alt={data?.featuresList?.[0]?.heading} width={600} />
+          <ProgressiveImage imageObject={data?.featuresList?.[0]?.image} alt={data?.featuresList?.[0]?.heading} width={600} classNames='feature-img' />
           <div className="feature-content">
             <h2>{data?.featuresList?.[0]?.heading}</h2>
             <p>{data?.featuresList?.[0]?.text}</p>
@@ -350,7 +350,7 @@ export default function Features({ data }: FeaturesProps) {
 
         {/* Feature 2 */}
         <div className="feature cloud-sun-feature">
-          <ProgressiveImage imageObject={data?.featuresList?.[1]?.image} alt={data?.featuresList?.[1]?.heading} width={600} />
+          <ProgressiveImage imageObject={data?.featuresList?.[1]?.image} alt={data?.featuresList?.[1]?.heading} width={600} classNames='feature-img' />
           <div className="feature-content">
             <h2>{data?.featuresList?.[1]?.heading}</h2>
             <p>{data?.featuresList?.[1]?.text}</p>
@@ -360,7 +360,7 @@ export default function Features({ data }: FeaturesProps) {
 
         {/* Feature 3 */}
         <div className="feature cloudy-feature">
-          <ProgressiveImage imageObject={data?.featuresList?.[2]?.image} alt={data?.featuresList?.[2]?.heading} width={600} />
+          <ProgressiveImage imageObject={data?.featuresList?.[2]?.image} alt={data?.featuresList?.[2]?.heading} width={600} classNames='feature-img' />
           <div className="feature-content">
             <h2>{data?.featuresList?.[2]?.heading}</h2>
             <p>{data?.featuresList?.[2]?.text}</p>
@@ -370,7 +370,7 @@ export default function Features({ data }: FeaturesProps) {
 
         {/* Feature 4 */}
         <div className="feature rainy-feature">
-          <ProgressiveImage imageObject={data?.featuresList?.[3]?.image} alt={data?.featuresList?.[3]?.heading} width={600} />
+          <ProgressiveImage imageObject={data?.featuresList?.[3]?.image} alt={data?.featuresList?.[3]?.heading} width={600} classNames='feature-img' />
           <div className="feature-content">
             <h2>{data?.featuresList?.[3]?.heading}</h2>
             <p>{data?.featuresList?.[3]?.text}</p>
@@ -380,7 +380,7 @@ export default function Features({ data }: FeaturesProps) {
 
         {/* Feature 5 */}
         <div className="feature snowy-feature">
-          <ProgressiveImage imageObject={data?.featuresList?.[4]?.image} alt={data?.featuresList?.[4]?.heading} width={600} />
+          <ProgressiveImage imageObject={data?.featuresList?.[4]?.image} alt={data?.featuresList?.[4]?.heading} width={600} classNames='feature-img' />
           <div className="feature-content">
             <h2>{data?.featuresList?.[4]?.heading}</h2>
             <p>{data?.featuresList?.[4]?.text}</p>

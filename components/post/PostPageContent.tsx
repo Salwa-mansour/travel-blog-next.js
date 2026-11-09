@@ -15,23 +15,25 @@ export default async function PostPageContent({ params }: PostPageContentProps) 
 
   return (
     <>
-      <Suspense fallback={<div className="animate-pulse">Loading post...</div>}>
-        <PostData postId={id} />
-      </Suspense>
+    <section className='single-page-content'>
+          <Suspense fallback={<div className="animate-pulse">Loading post...</div>}>
+            <PostData postId={id} />
+          </Suspense>
 
-      <Suspense fallback={<div className="animate-pulse">Loading sidebar...</div>}>
-        <Sidebar />
-      </Suspense>
+          <Suspense fallback={<div className="animate-pulse">Loading sidebar...</div>}>
+            <Sidebar />
+          </Suspense>
 
-      <Suspense fallback={<div className="animate-pulse">Loading related posts...</div>}>
-        <RelatedPosts postId={id} />
-      </Suspense>
+     </section>
 
       <Suspense fallback={<div className="animate-pulse">Loading comments...</div>}>
         <CommentList postId={id} />
       </Suspense>
-
       <CommentForm postId={id} />
+
+       <Suspense fallback={<div className="animate-pulse">Loading related posts...</div>}>
+        <RelatedPosts postId={id} />
+      </Suspense>
     </>
   )
 }

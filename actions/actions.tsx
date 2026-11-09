@@ -109,8 +109,6 @@ export const getPageMetaData = cache(async (slug: string) => {
     title,
     headerImage {
       asset,
-      hotspot,
-      crop,
       imageAttribution
     },
     content,

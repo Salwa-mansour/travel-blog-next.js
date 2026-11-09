@@ -15,24 +15,24 @@ interface PostDataProps{
 export default async function PostData({ postId }: PostDataProps) {
   if (!postId) {
     return (
-      <section className="postDetail-container container">
+    
         <p className="error-text">Post not found.</p>
-      </section>
+    
     )
   }
 const post = await getPostDetailData(postId)
 
   return (
     <>
-      <section className="postDetail-container ">
-        <div className="main-wrapper">
+    
+      
           <Link href="/posts" className="back-link" title="Back to All Posts">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="back-caret-icon">
               <path d="m15 18-6-6 6-6" />
             </svg>
           </Link>
 
-          <article className="single-page-content">
+          <article className="article">
             <header className="post-header" role="region" aria-label="Post Header">
               {post.mainImage?.asset && (
                
@@ -68,12 +68,8 @@ const post = await getPostDetailData(postId)
               </div>
             </div>
           </article>
-        </div>
-      </section>
-                
-      {/* <section>
-        <RelatedPosts relatedPosts={relatedPosts} country={post?.locationDetails?.countryName} />
-      </section> */}
+       
+     
     </>
   )
 }

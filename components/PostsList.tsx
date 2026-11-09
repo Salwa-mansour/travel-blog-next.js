@@ -43,47 +43,53 @@ export default function PostsList({ initialPosts }: PostsListProps) {
   }, [initialPosts, searchTerm])
 
   return (
-    <div className="space-y-6">
-      {/* Search Input Form */}
+    <>
+     {/* Search Input Form */}
       <SearchForm searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
+    <section className="posts-container container">
+     
       {/* Posts Grid Display */}
       {filteredPosts.length === 0 ? (
         <p className="text-center text-gray-500 py-10">No posts found matching &quot;{searchTerm}&quot;.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredPosts.map((post) => (
-            <article key={post._id} className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+       
+          filteredPosts.map((post) => (
+            <article key={post._id} className="item-card">
               {post.mainImage?.asset && (
-                <div className="relative h-48 w-full">
+              
                   <ProgressiveImage
                     imageObject={post.mainImage}
                     alt={post.title || 'Post image'}
-                    classNames="object-cover w-full h-full"
+                    classNames="post-img"
+                    width={600}
                   />
-                </div>
+               
               )}
-              <div className="p-4 space-y-2">
-                <h2 className="font-bold text-lg text-gray-900 line-clamp-1">{post.title}</h2>
+              <div className="card-info">
+      
                 {post.locationDetails?.cityName && (
-                  <p className="text-xs text-blue-600 font-medium">
+                  <h6 className="location">
                     📍 {post.locationDetails.cityName}, {post.locationDetails.countryName}
-                  </p>
+                  </h6>
                 )}
-                <p className="text-sm text-gray-600 line-clamp-2">{post.excerpt}</p>
+                  <h3 className="post-title">{post.title}</h3>
+                <p className="post-desc">{post.excerpt}</p>
                 {post.slug?.current && (
                   <Link 
                     href={`/posts/${post._id}`}
-                    className="inline-block pt-2 text-xs font-semibold text-blue-600 hover:underline"
+                    className="card-link"
+                    title='read more'
                   >
-                    Read More &rarr;
+                   
                   </Link>
                 )}
               </div>
             </article>
-          ))}
-        </div>
+          ))
+      
       )}
-    </div>
+    </section>
+    </>
   )
 }

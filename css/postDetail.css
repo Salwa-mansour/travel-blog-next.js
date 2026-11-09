@@ -34,6 +34,9 @@
     align-items: start;
     
 }
+.article{
+  display: contents;
+}
 .main-img{
     position: relative;
     width: 100%;
@@ -110,6 +113,7 @@ figure img{
    }
    .item-card .post-title,
    .item-card .location{
+    outline: 1px solid red;
     margin-bottom: .5rem;
    }
    /* sidebar */
