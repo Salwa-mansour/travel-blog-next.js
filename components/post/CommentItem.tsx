@@ -21,9 +21,9 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null)
 
   return (
-    <div className="main-comment-item border-l-2 border-gray-200 pl-4 my-4 space-y-3">
+    <div className="main-comment-item">
       {/* Top-Level Comment Header */}
-      <div className="flex justify-between items-center">
+      <div className="">
         <span className="font-semibold text-gray-900">{comment.name}</span>
         <span className="text-xs text-gray-400">
           {new Date(comment._createdAt).toLocaleDateString()}
