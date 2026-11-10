@@ -33,14 +33,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${bodoniModaSC.variable} ${quicksand.variable} h-full antialiased`}
    
    >
-      <body className="min-h-full flex flex-col">
-         <Suspense fallback={<div className="h-16" />}>
-          <Header />
-        </Suspense>
-          {children}
-          <Suspense fallback={<div className="h-16" />}>
-          <Footer />
-        </Suspense>
+      <body>
+        
+    
+            <Suspense fallback={<div className="h-16" />}>
+              <Header />
+            </Suspense>
+              {children}
+              <Suspense fallback={<div className="h-16" />}>
+              <Footer />
+            </Suspense>
+       
       </body>
     </html>
   );

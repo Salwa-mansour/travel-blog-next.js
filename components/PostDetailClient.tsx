@@ -17,7 +17,7 @@ interface PostDetailClientProps {
 export default function PostDetailClient({ post, latestPosts, relatedPosts }: PostDetailClientProps) {
   if (!post) {
     return (
-      <section className="postDetail-container container">
+      <section className="postDetail-container main-container">
         <p className="error-text">Post not found.</p>
       </section>
     )

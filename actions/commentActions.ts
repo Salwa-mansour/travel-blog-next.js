@@ -38,16 +38,17 @@ export async function submitComment(prevState: any, formData: FormData) {
   }
 }
 
-export const getPostComments = cache(async ( postId: string) => {
+export const getPostComments = cache(async (postId: string) => {
   if (!postId) return []
 
   const query = `*[_type == "comment" && post._ref == $postId && approved == true] | order(_createdAt asc) {
-  _id,
-  name,
-  comment,
-  _createdAt,
-  "parentId": parentComment._ref
-}`
+    _id,
+    name,
+    comment,
+    _createdAt,
+    "parentId": parentComment._ref,
+    "parentAuthorName": parentComment->name  // <--- This gets the parent comment author's name
+  }`
 
   return await client.fetch(query, { postId })
 })

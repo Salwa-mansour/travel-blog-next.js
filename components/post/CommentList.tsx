@@ -1,6 +1,9 @@
 import { getPostComments } from '@/actions/commentActions'
-import { buildCommentTree } from '@/util/utilFunctions'
+// import { buildCommentTree } from '@/util/utilFunctions'
+import { buildFlatThread } from '@/util/utilFunctions';
 import CommentItem from '@/components/post/CommentItem'
+import "@/css/comment.css";
+
 
 interface CommentListProps {
   postId: string
@@ -9,14 +12,17 @@ interface CommentListProps {
 export default async function CommentList({ postId }: CommentListProps) {
  
   const comments = await getPostComments(postId)
-  const commentList = buildCommentTree(comments)
+  const commentList = buildFlatThread(comments)
 
   if (!commentList || commentList.length === 0) {
-    return <p className="text-sm text-gray-500 my-4">No comments yet. Be the first to share your thoughts!</p>
-  }
+    return (
+       <div className="comment-container">
+         <p >No comments yet. Be the first to share your thoughts!</p>
+      </div>
+   )}
 
   return (
-    <div className="border-l-2 border-gray-200 pl-4 my-4 space-y-3">
+    <div className="comment-container">
       {commentList.map((commentItem: any) => (
         <CommentItem key={commentItem._id} postId={postId} comment={commentItem} />
       ))}

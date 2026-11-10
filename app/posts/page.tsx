@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import PostsWrapper from '@/components/PostsWrapper'
 import { Suspense } from 'react'
 import PageHeader from '@/components/PageHeader'
+import '@/css/postDetail.css'
 
 export async function generateMetadata(): Promise<Metadata> {
   // Fetch metadata using the dedicated function with the 'posts' slug

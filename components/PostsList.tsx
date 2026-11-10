@@ -47,7 +47,7 @@ export default function PostsList({ initialPosts }: PostsListProps) {
      {/* Search Input Form */}
       <SearchForm searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
-    <section className="posts-container container">
+    <section className="posts-container main-container">
      
       {/* Posts Grid Display */}
       {filteredPosts.length === 0 ? (
