@@ -19,7 +19,7 @@ export default function ProgressiveImage({
   alt = 'image',
   isPrior = false,
   classNames = '',
- width = 1920, 
+ width = 1200, 
   imgCaption,
  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 }: ProgressiveImageProps) {
