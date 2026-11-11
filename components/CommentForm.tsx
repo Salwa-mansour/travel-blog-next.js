@@ -19,7 +19,7 @@ export default function CommentForm({ postId,parentId,onSuccess }:  CommentFromP
       <input type="hidden" name="postId" value={postId} />
       <input type="hidden" name="parentId" value={parentId} />
       
-      <h3 className="text-xl font-bold">Leave a Comment</h3>
+      <h3 className="title">Leave a Comment</h3>
       
       <div>
         <label className="block text-sm font-medium mb-1">Name*</label>

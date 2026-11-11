@@ -67,6 +67,7 @@ export default function Hero({ homeData }: HeroProps) {
               alt={'Hero background visual'}
               isPrior={true}
               classNames={'hero-image'}
+              sizes="100vw"
             />
           )}
 

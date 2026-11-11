@@ -21,22 +21,22 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null)
 
   return (
-    <div className="main-comment-item">
+    <div className="comment-item">
       {/* Top-Level Comment Header */}
-      <div className="">
-        <span className="font-semibold text-gray-900">{comment.name}</span>
-        <span className="text-xs text-gray-400">
+      <div className="comment-header">
+        <span className="author-name">{comment.name}</span>
+        <span className="comment-date">
           {new Date(comment._createdAt).toLocaleDateString()}
         </span>
       </div>
       
       {/* Top-Level Comment Body */}
-      <p className="text-gray-700 text-sm whitespace-pre-wrap">
-        {comment.parentAuthorName && (
+      <p className="comment-body">
+        {/* {comment.parentAuthorName && (
           <span className="font-semibold text-blue-600 mr-1">
             @{comment.parentAuthorName}
           </span>
-        )}
+        )} */}
         {comment.comment}
       </p>
 
@@ -46,14 +46,14 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
           setIsReplying(!isReplying)
           setActiveReplyId(null)
         }}
-        className="text-xs font-medium text-blue-600 hover:underline"
+        className="replay-button"
       >
-        {isReplying ? 'Cancel' : 'Reply'}
+        {isReplying ? 'Cancel' : '💬 Reply'}
       </button>
 
       {/* Reply Form for Top-Level Comment */}
       {isReplying && (
-        <div className="mt-3 pt-2">
+        <div className="">
           <CommentForm 
             postId={postId} 
             parentId={comment._id} 
@@ -69,15 +69,15 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
             const isReplyingToThis = activeReplyId === reply._id
 
             return (
-              <li key={reply._id} className="reply-item ">
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold text-gray-800 text-xs">{reply.name}</span>
-                  <span className="text-[10px] text-gray-400">
+              <li key={reply._id} className="comment-item reply-item ">
+                <div className="comment-header">
+                  <span className="author-name">{reply.name}</span>
+                  <span className="comment-date">
                     {new Date(reply._createdAt).toLocaleDateString()}
                   </span>
                 </div>
                 
-                <p className="text-gray-600 text-xs whitespace-pre-wrap">
+                <p className="comment-body">
                   {reply.parentAuthorName && (
                     <span className="parentAuthorName">
                       @{reply.parentAuthorName}
@@ -92,14 +92,14 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
                     setActiveReplyId(isReplyingToThis ? null : reply._id)
                     setIsReplying(false)
                   }}
-                  className="text-[11px] font-medium text-blue-600 hover:underline mt-1"
+                  className="replay-button"
                 >
-                  {isReplyingToThis ? 'Cancel' : 'Reply'}
+                  {isReplyingToThis ? 'Cancel' : '💬 Reply'}
                 </button>
 
                 {/* Reply Form for Individual Reply */}
                 {isReplyingToThis && (
-                  <div className="mt-2 pt-1">
+                  <div className="">
                     <CommentForm 
                       postId={postId} 
                       parentId={reply._id} 

@@ -23,6 +23,8 @@ export default async function CommentList({ postId }: CommentListProps) {
 
   return (
     <div className="comment-container">
+      <h3 className="title">comments of this post</h3>
+      
       {commentList.map((commentItem: any) => (
         <CommentItem key={commentItem._id} postId={postId} comment={commentItem} />
       ))}

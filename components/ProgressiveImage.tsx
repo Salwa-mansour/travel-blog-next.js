@@ -19,9 +19,9 @@ export default function ProgressiveImage({
   alt = 'image',
   isPrior = false,
   classNames = '',
-  width = 1200,
+ width = 1920, 
   imgCaption,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+ sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 }: ProgressiveImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
 

@@ -17,6 +17,7 @@ export default async function PageHeader({ slug }: PageHeaderProps) {
             isPrior={true}
             alt="posts header img"
             classNames='header-img'
+            sizes="100vw"
             imgCaption={pageMetaData.headerImage.imageAttribution}
           />
         )}

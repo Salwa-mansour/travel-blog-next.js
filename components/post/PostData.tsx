@@ -41,6 +41,7 @@ const post = await getPostDetailData(postId)
                     alt={post.title}
                     isPrior={true}
                     classNames='main-img'
+                    sizes="100vw"
                     imgCaption={post.mainImage.imageAttribution ?{ __html: post.mainImage.imageAttribution } :null } />
                  
                   
